@@ -6,8 +6,8 @@ const FloorInspector = require('./floor_inspector');
 module.exports = class Floor {
 
   constructor(inbox, expected, size, insts) {
-    this.inbox = new BoxQueue(inbox);
-    this.outbox = new BoxQueue([]);
+    this._inbox = new BoxQueue(inbox);
+    this._outbox = new BoxQueue([]);
     this.expectedQueue = new BoxQueue(expected);
     this.memory = Array.isArray(size) ? size : new Array(size);
     this.insts = insts;
@@ -17,7 +17,7 @@ module.exports = class Floor {
   }
 
   hasNextInbox() {
-    return ! this.inbox.isEmpty();
+    return ! this._inbox.isEmpty();
   }
 
   hasNextInstruction() {
@@ -101,15 +101,15 @@ module.exports = class Floor {
   }
 
   isValid() {
-    if (this.outbox.isEmpty()) {
+    if (this._outbox.isEmpty()) {
       return true;
     } else if (this.isOutboxLongerThanExpected()) {
       return false;
     } else {
       var invalid = false;
 
-      for (var i = 0; i < this.outbox.queue.length ; ++i) {
-        const b1 = this.outbox.queue[i];
+      for (var i = 0; i < this._outbox.queue.length ; ++i) {
+        const b1 = this._outbox.queue[i];
         const b2 = this.expectedQueue.queue[i];
 
         invalid = b1.value != b2.value;
@@ -124,7 +124,7 @@ module.exports = class Floor {
   }
 
   isSuccess() {
-    return this.outbox.queue.length == this.expectedQueue.queue.length && this.isValid();
+    return this.outbox._queue.length == this.expectedQueue._queue.length && this.isValid();
   }
 
   toString() {
