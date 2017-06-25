@@ -163,7 +163,9 @@ module.exports = class Floor {
   }
 
   isSuccess() {
-    return this.outbox._queue.length == this.expectedQueue._queue.length && this.isValid();
+    if (this._outbox.queue.length != this.expectedQueue.queue.length) {
+      throw new Error('boxes in inbox');
+    }
   }
 
   toString() {
