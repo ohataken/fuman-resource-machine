@@ -8,6 +8,10 @@ module.exports = class Register {
     return this.value = value;
   }
 
+  get() {
+    return this.value;
+  }
+
   pop() {
     const value = this.value;
     this.value = undefined;
