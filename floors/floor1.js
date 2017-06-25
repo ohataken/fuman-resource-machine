@@ -6,6 +6,7 @@ module.exports = class Floor1 extends Floor {
     super(
       [1, 2, 3],
       [1, 2, 3],
+      0,
       insts
     );
   }

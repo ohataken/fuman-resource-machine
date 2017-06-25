@@ -4,10 +4,11 @@ const FloorInspector = require('./floor_inspector');
 
 module.exports = class Floor {
 
-  constructor(inbox, expected, insts) {
+  constructor(inbox, expected, size, insts) {
     this.inbox = new BoxQueue(inbox);
     this.outbox = new BoxQueue([]);
     this.expectedQueue = new BoxQueue(expected);
+    this.memory = Array.isArray(size) ? size : new Array(size);
     this.insts = insts;
     this.pc = 0;
     this.register = new Register();
@@ -41,6 +42,18 @@ module.exports = class Floor {
     return this.insts[this.pc];
   }
 
+  copyto(box, addr) {
+    if (addr < this.memory.length - 1) {
+      this.memory[addr] = box;
+    }
+  }
+
+  copyfrom(addr) {
+    if (addr < this.memory.length - 1) {
+      return this.memory[addr];
+    }
+  }
+
   evalAndNext() {
     const inst = this.currentInstruction();
 
@@ -54,8 +67,12 @@ module.exports = class Floor {
         ++this.pc;
         break;
       case 'copyto':
+        this.copyto(this.register.get(), inst.operands[0]);
+        ++this.pc;
         break;
       case 'copyfrom':
+        this.register.push(this.memory[inst.operands[0]]);
+        ++this.pc;
         break;
       case 'add':
         break;
