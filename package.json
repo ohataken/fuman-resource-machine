@@ -1,0 +1,19 @@
+{
+  "name": "fuman-resource-machine",
+  "version": "0.0.1",
+  "description": "a clone of Human Resource Machine written in node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohataken/fuman-resource-machine.git"
+  },
+  "author": "@ohataken",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ohataken/fuman-resource-machine/issues"
+  },
+  "homepage": "https://github.com/ohataken/fuman-resource-machine#readme"
+}
