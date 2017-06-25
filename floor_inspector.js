@@ -25,4 +25,15 @@ module.exports = class FloorInspector {
     return s;
   }
 
+  toJSON() {
+    return {
+      pc: `${this.floor.pc} / ${this.floor.insts.length}`,
+      register: this.unlessUndefined(this.floor.register.value, (o) => { return o.value; }),
+      instruction: this.unlessUndefined(this.floor.currentInstruction(), (o) => { return o.name }),
+      inbox: this.floor._inbox,
+      outbox: this.floor._outbox,
+      expected: this.floor.expectedQueue,
+    };
+  }
+
 };
