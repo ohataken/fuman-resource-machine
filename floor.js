@@ -43,42 +43,80 @@ module.exports = class Floor {
     return this.insts[this.pc];
   }
 
+  isSegv(p) {
+    return p < 0 || this.memory.length < p;
+  }
+
+  getMemoryAt(p) {
+    if (isSegv(p)) {
+      throw 'segmentation fault';
+    } else {
+      return this.memory[p];
+    }
+  }
+
+  setMemoryAt(p, box) {
+    if (isSegv(p)) {
+      throw 'segmentation fault';
+    } else {
+      return this.memory[p] = box;
+    }
+  }
+
   inbox(inst) {
-    this.register.push(this._inbox.pop());
+    const box = this._inbox.pop();
+
+    if (!box) {
+      throw 'no box in the inbox';
+    }
+
+    this.register.push(box);
     ++this.pc;
   }
 
   outbox(inst) {
-    this._outbox.push(this.register.pop());
+    const box = this.register.pop();
+
+    if (!box) {
+      throw 'no box in the register';
+    }
+
+    this._outbox.push(box);
     ++this.pc;
   }
 
   copyto(inst) {
-    this.copyto(this.register.get(), inst.operands[0]);
-    ++this.pc;
-    if (addr < this.memory.length - 1) {
-      this.memory[addr] = box;
+    const box = this.register.get();
+
+    if (!box) {
+      throw 'no box in the register';
     }
+
+    this.setMemoryAt(p, box);
+    ++this.pc;
   }
 
   copyfrom(inst) {
-    this.register.push(this.memory[inst.operands[0]]);
-    ++this.pc;
-    if (addr < this.memory.length - 1) {
-      return this.memory[addr];
+    const box = this.getMemoryAt(inst.operands[0]);
+
+    if (!box) {
+      throw 'no box in the memory cell';
     }
+
+    this.register.push(box);
+    ++this.pc;
   }
 
   add(inst) {
     const o1 = this.register.pop();
-    const o2 = this.memory[inst.operands[0]];
+    const o2 = this.getMemoryAt(inst.operands[0]);
     this.register.push(new Box(o1 + o2));
     ++this.pc;
   }
 
   sub(inst) {
     const o1 = this.register.pop();
-    const o2 = this.memory[inst.operands[0]];
+    const o2 = this.getMemoryAt(inst.operands[0]);
     this.register.push(new Box(o1 - o2));
     ++this.pc;
   }

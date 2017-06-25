@@ -14,8 +14,13 @@ module.exports = class Register {
 
   pop() {
     const value = this.value;
-    this.value = undefined;
-    return value;
+
+    if (value) {
+      this.value = undefined;
+      return value;
+    } else {
+      throw 'no box in the register';
+    }
   }
 
 };
