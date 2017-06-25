@@ -170,4 +170,8 @@ module.exports = class Floor {
     return this.inspector.toString();
   }
 
+  toJSON() {
+    return this.inspector.toJSON();
+  }
+
 };
