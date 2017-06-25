@@ -43,61 +43,53 @@ module.exports = class Floor {
     return this.insts[this.pc];
   }
 
-  copyto(box, addr) {
+  inbox(inst) {
+    this.register.push(this._inbox.pop());
+    ++this.pc;
+  }
+
+  outbox(inst) {
+    this._outbox.push(this.register.pop());
+    ++this.pc;
+  }
+
+  copyto(inst) {
+    this.copyto(this.register.get(), inst.operands[0]);
+    ++this.pc;
     if (addr < this.memory.length - 1) {
       this.memory[addr] = box;
     }
   }
 
-  copyfrom(addr) {
+  copyfrom(inst) {
+    this.register.push(this.memory[inst.operands[0]]);
+    ++this.pc;
     if (addr < this.memory.length - 1) {
       return this.memory[addr];
     }
   }
 
+  add(inst) {
+    const o1 = this.register.pop();
+    const o2 = this.memory[inst.operands[0]];
+    this.register.push(new Box(o1 + o2));
+    ++this.pc;
+  }
+
+  sub(inst) {
+    const o1 = this.register.pop();
+    const o2 = this.memory[inst.operands[0]];
+    this.register.push(new Box(o1 - o2));
+    ++this.pc;
+  }
+
   evalAndNext() {
     const inst = this.currentInstruction();
-
-    switch(inst.name) {
-      case 'inbox':
-        this.register.push(this.inbox.pop());
-        ++this.pc;
-        break;
-      case 'outbox':
-        this.outbox.push(this.register.pop());
-        ++this.pc;
-        break;
-      case 'copyto':
-        this.copyto(this.register.get(), inst.operands[0]);
-        ++this.pc;
-        break;
-      case 'copyfrom':
-        this.register.push(this.memory[inst.operands[0]]);
-        ++this.pc;
-        break;
-      case 'add':
-        const o1 = this.register.pop();
-        const o2 = this.memory[inst.operands[0]];
-        this.register.push(new Box(o1 + o2));
-        ++this.pc;
-        break;
-      case 'sub':
-        const o1 = this.register.pop();
-        const o2 = this.memory[inst.operands[0]];
-        this.register.push(new Box(o1 - o2));
-        ++this.pc;
-        break;
-      case 'jump':
-        break;
-      case 'jumpifzero':
-        break;
-      case 'jumpifneg':
-        break;
-    }
+    return this[inst.name](inst);
   }
 
   isOutboxLongerThanExpected() {
-    return this.expectedQueue.queue.length < this.outbox.queue.length;
+    return this.expectedQueue.queue.length < this._outbox.queue.length;
   }
 
   isValid() {
