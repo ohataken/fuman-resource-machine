@@ -8,6 +8,7 @@ module.exports = class Floor1 extends Floor {
       [1, 2, 3],
       0,
       insts,
+      'bring each boxes to outbox.',
       [
         'inbox',
         'outbox',

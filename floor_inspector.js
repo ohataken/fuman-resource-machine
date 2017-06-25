@@ -27,6 +27,7 @@ module.exports = class FloorInspector {
 
   toJSON() {
     return {
+      description: this.floor.description,
       pc: `${this.floor.pc} / ${this.floor.insts.length}`,
       register: this.unlessUndefined(this.floor.register.value, (o) => { return o.value; }),
       instruction: this.unlessUndefined(this.floor.currentInstruction(), (o) => { return o.name }),
