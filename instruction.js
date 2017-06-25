@@ -1,7 +1,7 @@
 module.exports = class Instruction {
 
   static parse(string) {
-    const regexp = /(\w+)\s?(\d+)?;/g
+    const regexp = /\(\s*(\w+)\s?(\d+)?\s*\)/g
     const array = [];
 
     while (regexp.lastIndex < string.length) {

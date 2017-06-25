@@ -6,6 +6,6 @@ a clone of human resource machine.
 
 just run
 
-    $ curl -d "inbox;outbox;" https://fuman-resource-machine.herokuapp.com/floors/1
+    $ curl -d "(inbox)(outbox)" https://fuman-resource-machine.herokuapp.com/floors/1
 
 enjoy! :)

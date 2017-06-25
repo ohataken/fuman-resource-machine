@@ -55,7 +55,7 @@ protocol.createServer((request, response) => {
       response.write(JSON.stringify({
         message: 'You failed!',
         error: e.message,
-        inspect: floor.toJSON(),
+        inspect: floor ? floor.toJSON() : '',
       }));
       response.write('\n');
       return response.end();
