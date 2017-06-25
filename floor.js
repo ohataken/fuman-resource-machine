@@ -5,7 +5,7 @@ const FloorInspector = require('./floor_inspector');
 
 module.exports = class Floor {
 
-  constructor(inbox, expected, size, insts) {
+  constructor(inbox, expected, size, insts, availableInsts) {
     this._inbox = new BoxQueue(inbox);
     this._outbox = new BoxQueue([]);
     this.expectedQueue = new BoxQueue(expected);
@@ -13,7 +13,16 @@ module.exports = class Floor {
     this.insts = insts;
     this.pc = 0;
     this.register = new Register();
+    this.availableInsts = availableInsts;
     this.inspector = new FloorInspector(this);
+  }
+
+  validateStatically() {
+    this.insts.forEach((inst) => {
+      if (!this.availableInsts.includes(inst.name)) {
+        throw 'unavailable instruction ' + inst.name;
+      }
+    });
   }
 
   hasNextInbox() {

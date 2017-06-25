@@ -7,7 +7,11 @@ module.exports = class Floor1 extends Floor {
       [1, 2, 3],
       [1, 2, 3],
       0,
-      insts
+      insts,
+      [
+        'inbox',
+        'outbox',
+      ],
     );
   }
 
