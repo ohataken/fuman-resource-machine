@@ -20,7 +20,7 @@ module.exports = class Floor {
   validateStatically() {
     this.insts.forEach((inst) => {
       if (!this.availableInsts.includes(inst.name)) {
-        throw 'unavailable instruction ' + inst.name;
+        throw new Error('unavailable instruction ' + inst.name);
       }
     });
   }
@@ -58,7 +58,7 @@ module.exports = class Floor {
 
   getMemoryAt(p) {
     if (isSegv(p)) {
-      throw 'segmentation fault';
+      throw new Error('segmentation fault');
     } else {
       return this.memory[p];
     }
@@ -66,7 +66,7 @@ module.exports = class Floor {
 
   setMemoryAt(p, box) {
     if (isSegv(p)) {
-      throw 'segmentation fault';
+      throw new Error('segmentation fault');
     } else {
       return this.memory[p] = box;
     }
@@ -76,7 +76,7 @@ module.exports = class Floor {
     const box = this._inbox.pop();
 
     if (!box) {
-      throw 'no box in the inbox';
+      throw new Error('no box in the inbox');
     }
 
     this.register.push(box);
@@ -87,7 +87,7 @@ module.exports = class Floor {
     const box = this.register.pop();
 
     if (!box) {
-      throw 'no box in the register';
+      throw new Error('no box in the register');
     }
 
     this._outbox.push(box);
@@ -98,7 +98,7 @@ module.exports = class Floor {
     const box = this.register.get();
 
     if (!box) {
-      throw 'no box in the register';
+      throw new Error('no box in the register');
     }
 
     this.setMemoryAt(p, box);
@@ -109,7 +109,7 @@ module.exports = class Floor {
     const box = this.getMemoryAt(inst.operands[0]);
 
     if (!box) {
-      throw 'no box in the memory cell';
+      throw new Error('no box in the memory cell');
     }
 
     this.register.push(box);
