@@ -1,8 +1,11 @@
 const http = require('http');
+const https = require('https');
 const floorRequire = require('./floor_require');
 const Instruction = require('./instruction');
 
-http.createServer((request, response) => {
+const protocol = process.env.SSL === 'true' ? https : http;
+
+protocol.createServer((request, response) => {
 
   var buffer = '';
 
