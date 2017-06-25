@@ -1,3 +1,4 @@
+const Box = require('./box');
 const BoxQueue = require('./box_queue');
 const Register = require('./register');
 const FloorInspector = require('./floor_inspector');
@@ -75,8 +76,16 @@ module.exports = class Floor {
         ++this.pc;
         break;
       case 'add':
+        const o1 = this.register.pop();
+        const o2 = this.memory[inst.operands[0]];
+        this.register.push(new Box(o1 + o2));
+        ++this.pc;
         break;
       case 'sub':
+        const o1 = this.register.pop();
+        const o2 = this.memory[inst.operands[0]];
+        this.register.push(new Box(o1 - o2));
+        ++this.pc;
         break;
       case 'jump':
         break;
