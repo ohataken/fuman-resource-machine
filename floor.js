@@ -95,6 +95,16 @@ module.exports = class Floor {
     ++this.pc;
   }
 
+  jump(inst) {
+    const p = inst.operands[0];
+
+    if (p < 0 || this.insts.length < p) {
+      throw new Error('invalid jump');
+    }
+
+    this.pc = p;
+  }
+
   copyto(inst) {
     const box = this.register.get();
 
