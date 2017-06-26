@@ -38,7 +38,7 @@ protocol.createServer((request, response) => {
       floor = new Floor(Instruction.parse(buffer));
       floor.validateStatically();
 
-      while(floor.currentInstruction() && floor.isValid()) {
+      while(floor.currentInstruction() && floor.isValid() && !floor.isOutboxFilled()) {
         floor.evalAndNext();
       }
 
