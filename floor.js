@@ -173,8 +173,12 @@ module.exports = class Floor {
     }
   }
 
+  isOutboxFilled() {
+    return this._outbox.queue.length == this.expectedQueue.queue.length;
+  }
+
   isSuccess() {
-    if (this._outbox.queue.length != this.expectedQueue.queue.length) {
+    if (!this.isOutboxFilled()) {
       throw new Error('boxes in inbox');
     }
   }
