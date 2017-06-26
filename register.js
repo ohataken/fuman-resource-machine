@@ -19,7 +19,7 @@ module.exports = class Register {
       this.value = undefined;
       return value;
     } else {
-      throw 'no box in the register';
+      throw new Error('no box in the register');
     }
   }
 
